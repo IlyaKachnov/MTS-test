@@ -40,20 +40,15 @@ public class MainController {
     }
 
     @GetMapping(value = "task/{id}")
-    public ResponseEntity<?> show(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> show(@PathVariable("id") String id) {
 
-//        String uuidStr = id.toString();
-//        System.out.println(uuidStr);
-//        if (!uuidStr.matches("/^\\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\}?$/")) {
-//            System.out.println("is not uuid");
-//        }
+        if (!id.matches("([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}")) {
+            return new ResponseEntity<>("Not a UUID!", HttpStatus.BAD_REQUEST);
+        }
 
-//        if (id instanceof UUID) {
-//
-//            return new ResponseEntity<>("Not a UUID!", HttpStatus.BAD_REQUEST);
-//        }
+        UUID uuid = UUID.fromString(id);
 
-        Optional<Task> task = taskService.findById(id);
+        Optional<Task> task = taskService.findById(uuid);
 
         if (!task.isPresent()) {
             return new ResponseEntity<>("Task not found!", HttpStatus.NOT_FOUND);
