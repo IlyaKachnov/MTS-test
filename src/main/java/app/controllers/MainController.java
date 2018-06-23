@@ -25,11 +25,6 @@ public class MainController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/")
-    public UUID index() {
-        return taskService.findAll().stream().findAny().get().getId();
-    }
-
     @PostMapping(value = "/task")
     public ResponseEntity<?> create() {
         Task task = new Task();
@@ -47,7 +42,6 @@ public class MainController {
         }
 
         UUID uuid = UUID.fromString(id);
-
         Optional<Task> task = taskService.findById(uuid);
 
         if (!task.isPresent()) {

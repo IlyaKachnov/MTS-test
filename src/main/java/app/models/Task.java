@@ -1,17 +1,15 @@
 package app.models;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tasks")
 public class Task {
     @Id
-//    @GeneratedValue(generator = "uuid2")
-//    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id = UUID.randomUUID();
 
@@ -33,8 +31,10 @@ public class Task {
         this.status = status;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public String getTimestamp() {
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        isoFormat.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
+        return isoFormat.format(timestamp);
     }
 
     public void setTimestamp(Date timestamp) {
@@ -44,7 +44,4 @@ public class Task {
     public Task() {
     }
 
-//    public getInfo() {
-//        return ;
-//    }
 }
